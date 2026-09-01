@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from '../../services/api';
+import PasswordChange from '../../components/PasswordChange';
 
 export default function UserDashboard() {
   const [stores, setStores] = useState([]);
@@ -22,18 +23,24 @@ export default function UserDashboard() {
   };
 
   return (
-    <div style={{ padding: 20 }}>
+    <div style={{ padding: 25, maxWidth: 1100, margin: '0 auto' }}>
       <h1>Store Directory & Ratings</h1>
+      
+      {/* Password Change Section */}
+      <PasswordChange />
+
       <input
-        style={{ padding: 10, width: '100%', marginBottom: 15 }}
+        style={{ padding: 10, width: '100%', marginBottom: 15, borderRadius: 4, border: '1px solid #cbd5e1' }}
         placeholder="Search stores by name or address..."
         value={search}
         onChange={e => setSearch(e.target.value)}
       />
-      <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse', background: '#fff' }}>
         <thead>
           <tr style={{ background: '#e2e8f0' }}>
-            <th onClick={() => { setSortBy('name'); setSortOrder(sortOrder === 'ASC' ? 'DESC' : 'ASC'); }} style={{ cursor: 'pointer' }}>Store Name ⬍</th>
+            <th onClick={() => { setSortBy('name'); setSortOrder(sortOrder === 'ASC' ? 'DESC' : 'ASC'); }} style={{ cursor: 'pointer' }}>
+              Store Name ⬍
+            </th>
             <th>Address</th>
             <th>Overall Rating</th>
             <th>Your Rating</th>
@@ -57,7 +64,8 @@ export default function UserDashboard() {
                       marginRight: 4,
                       background: (s.userRating || 0) >= star ? '#eab308' : '#e2e8f0',
                       border: 'none',
-                      padding: '4px 8px'
+                      padding: '4px 8px',
+                      borderRadius: 3
                     }}
                   >
                     ★ {star}
