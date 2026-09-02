@@ -18,3 +18,10 @@ app.use('/api/ratings', ratingRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Backend running on port ${PORT}`));
+
+app.get('/api', (req, res) => {
+  res.status(200).json({
+    status: 'online',
+    message: 'Store Rating REST API is running successfully'
+  });
+});
