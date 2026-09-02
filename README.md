@@ -107,4 +107,3 @@ erDiagram
 ## ✨ Features & Constraints
 - **Role-Based Routing:** Dedicated UI views and backend middleware protection per role[cite: 1, 3, 5].
 - **Single-Rating Constraint:** Enforced via `UNIQUE KEY (user_id, store_id)` so raters can only submit one rating per store and subsequently edit it[cite: 2, 3].
-- **
