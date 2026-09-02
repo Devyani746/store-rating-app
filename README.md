@@ -1,69 +1,37 @@
 # Store Rating Web Application
 
-A full-stack role-based store rating platform built with Express.js, React.js, and MySQL.
+A full-stack web application with role-based access control (System Administrator, Normal User, Store Owner) where users can discover and rate stores, administrators manage users and listings, and store owners analyze performance metrics.
 
-## Tech Stack
-- **Frontend:** React.js, React Router DOM, Axios, Vite
-- **Backend:** Node.js, Express.js, JWT, bcryptjs, express-validator
-- **Database:** MySQL
+## 🚀 Live Demo
+- **Frontend App:** [https://store-rating-app-swart-nine.vercel.app](https://store-rating-app-swart-nine.vercel.app)
+- **Backend API:** [https://store-rating-app-1-hnw3.onrender.com/api](https://store-rating-app-1-hnw3.onrender.com/api)
 
-## Features by Role
-- **System Administrator:** 
-  - Manage users (Admin, Normal User, Store Owner) and Stores.
-  - View real-time analytics (Total Users, Stores, Ratings).
-  - Search, filter by role, and sort listings.
-- **Normal User:**
-  - Account registration and login.
-  - Browse stores, search by name/address, sort lists.
-  - Submit and modify 1–5 star ratings (1 rating per store constraint).
-  - Update password.
-- **Store Owner:**
-  - View store average rating.
-  - View table of users who submitted ratings.
-  - Update password.
+---
 
-## Validation Rules
-- **Name:** 20–60 characters.
-- **Address:** Up to 400 characters.
-- **Password:** 8–16 characters, $\ge$ 1 uppercase letter, $\ge$ 1 special character.
-- **Email:** Standard email format validation.
+## 🛠 Tech Stack
+- **Frontend:** React.js (Vite), React Router v6, Axios, Lucide Icons, Modern CSS
+- **Backend:** Node.js, Express.js (REST API, JWT Authentication, bcryptjs)
+- **Database:** TiDB Cloud Serverless (MySQL Compatible) via TLS/SSL Connection Pool
+- **Hosting:** Vercel (Frontend SPA), Render (Backend Web Service)
 
-## Local Setup
+---
 
-### 1. Database Setup
-Execute the following in MySQL:
-```sql
-CREATE DATABASE store_rating_db;
-USE store_rating_db;
+## 🔑 Pre-Configured Demo Credentials
 
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(60) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    address VARCHAR(400) NOT NULL,
-    role ENUM('ADMIN', 'USER', 'OWNER') NOT NULL DEFAULT 'USER',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+| Role | Email | Password | Permissions |
+| :--- | :--- | :--- | :--- |
+| **System Administrator** | `admin@storerating.com` | `Admin@12345` | Manage users, stores, global stats, sorting/filtering |
+| **Store Owner** | `owner@storerating.com` | `Owner@12345` | View store average rating, list of raters |
+| **Normal User** | *Register via /signup* | *Min 8-16 chars* | Browse stores, submit & modify 1-5 star ratings |
 
-CREATE TABLE stores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(60) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    address VARCHAR(400) NOT NULL,
-    owner_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
-);
+---
 
-CREATE TABLE ratings (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    store_id INT NOT NULL,
-    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    UNIQUE KEY uk_user_store (user_id, store_id),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (store_id) REFERENCES stores(id) ON DELETE CASCADE
-);
+## ✨ Features & Constraints
+- **Role-Based Routing:** Dedicated UI views and backend middleware protection per role.
+- **Single-Rating Constraint:** Enforced via `UNIQUE KEY (user_id, store_id)` so raters can only submit one rating per store and subsequently edit it.
+- **Strict Validations:**
+  - Name: 20–60 characters
+  - Address: Max 400 characters
+  - Password: 8–16 characters with at least one uppercase letter and one special character
+  - Email: Standard RFC email formatting
+- **Table Sorting & Search:** Ascending/descending column sorting and live multi-field filtering.
