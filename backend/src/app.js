@@ -9,11 +9,16 @@ const ratingRoutes = require('./routes/ratingRoutes');
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// Configure CORS for Vercel cross-origin requests & preflight OPTIONS checks
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
-// Public Health Check Endpoints
+// Public health check routes
 app.get('/', (req, res) => {
   res.status(200).send('Store Rating Backend Service is live.');
 });
@@ -25,13 +30,13 @@ app.get('/api', (req, res) => {
   });
 });
 
-// Route Handlers
+// Mounted API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/stores', storeRoutes);
 app.use('/api/ratings', ratingRoutes);
 
-// Catch-all 404 handler for unmatched API routes
+// Catch-all handler for unmapped /api routes
 app.use('/api/*', (req, res) => {
   res.status(404).json({
     error: 'Endpoint not found',
@@ -39,7 +44,7 @@ app.use('/api/*', (req, res) => {
   });
 });
 
-// Start Server
+// Server listener
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Backend running on port ${PORT}`));
 
